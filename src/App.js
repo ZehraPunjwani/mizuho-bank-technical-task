@@ -1,25 +1,36 @@
-import logo from './logo.svg';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Container } from 'react-bootstrap';
+import Header from './components/Header/';
+import About from "./components/About";
+import Error from "./components/Error";
+import TimeSeriesIntraday from "./components/TimeSeriesIntraday";
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const router = createBrowserRouter([
+        {
+            path: "/",
+            element: <TimeSeriesIntraday />,
+        },
+        {
+            path: "/about",
+            element: <About />,
+        },
+        {
+            path: "*",
+            element: <Error />,
+        }
+    ]);
+
+    return (
+        <div className="App" style={{ minWidth: '100vw' }}>
+            <Header />
+            <div style={{ margin: '30px' }}>
+                <RouterProvider router={router} />
+            </div>
+        </div>
+    );
 }
 
 export default App;
