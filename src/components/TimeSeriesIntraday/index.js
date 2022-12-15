@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Container, Card, Button, Spinner, Nav, DropdownButton, Dropdown, ButtonGroup } from "react-bootstrap";
+import { Container, Card, Button, Spinner, Nav, DropdownButton, Dropdown, ButtonGroup, Row, Col } from "react-bootstrap";
 import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider from 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit'
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
@@ -19,7 +19,7 @@ const TimeSeriesIntraday = () => {
     const intradayData = useSelector((state) => state.intraday.intradayData);
     const metaData = {
         "Series Type": ["TIME_SERIES_INTRADAY"],
-        "Symbol": ["IBM", "TSCO_LON"],
+        "Symbol": ["IBM"],
         "Last Refreshed": "2022-12-13 17:50:00",
         "Interval": ["1MIN", "5MIN", "15MIN", "30MIN"],
         "Output Size": "Full size",
@@ -240,6 +240,39 @@ const TimeSeriesIntraday = () => {
         }
     ];
 
+    const loadContent = (props) => {
+        if(refresh) {
+            return (
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            )
+        } else {
+            if (intradayData.error) {
+                return (
+                    <Card bg="danger" text='light' style={{width: '100%'}} className="mb-2">
+                        <Card.Body>
+                            <Card.Title>Error</Card.Title>
+                            <Card.Text>{intradayData.error}</Card.Text>
+                        </Card.Body>
+                    </Card>
+                )
+            } else {
+                return (
+                    <div style={{ marginTop: '10px', padding: '0px' }}>
+                        <BootstrapTable
+                            {...props.baseProps}
+                            defaultSorted={[{ dataField: '0. timestamp', order: 'desc' }]}
+                            filter={filterFactory()}
+                            pagination={paginationFactory({sizePerPageRenderer})}
+                            noDataIndication={ 'no results found' }
+                        />
+                    </div>
+                )
+            }
+        }
+    }
+
     return (
         <div style={{ textAlign: 'left' }}>
             <div>Requirements</div>
@@ -252,88 +285,70 @@ const TimeSeriesIntraday = () => {
             </ul>
 
             <Card>
-                <Card.Header>TIME_SERIES_INTRADAY</Card.Header>
+                <Card.Header>
+                    <Row>
+                        <Col>
+                            TIME_SERIES_INTRADAY
+                        </Col>
+                        <Col style={{ textAlign: 'right' }}>
+                            Last Refreshed: {tabularData.LastRefreshed} {tabularData.TimeZone}
+                        </Col>
+                    </Row>
+                </Card.Header>
                 <Card.Body>
                     <ToolkitProvider keyField='0. timestamp' data={tabularData.data} columns={columns} exportCSV={ { onlyExportFiltered: true, exportAll: false } }>
-                        {
-                            props => (
-                                <Container>
-                                    <Nav className="justify-content-end">
-                                        <ButtonGroup className="mb-2">
-                                            <Nav.Item>
-                                                <MyExportCSV {...props.csvProps} />
-                                            </Nav.Item>
-                                        </ButtonGroup>
-                                        <ButtonGroup className="mb-2">
-                                            <Nav.Item style={{marginLeft: '10px'}}>
-                                                <DropdownButton id="dropdown-basic-button" title={tabularData["SeriesType"]}>
-                                                    {
-                                                        metaData["Series Type"].map((seriesType) => (
-                                                            <Dropdown.Item key={seriesType} onClick={() => { fetchTimeSeriesIntradayData({}) }}
-                                                            >{seriesType}</Dropdown.Item>
-                                                        ))
-                                                    }
-                                                </DropdownButton>
-                                            </Nav.Item>
-                                            <Nav.Item style={{marginLeft: '10px'}}>
-                                                <DropdownButton id="dropdown-basic-button" title={tabularData["Symbol"]}>
-                                                    {
-                                                        metaData["Symbol"].map((symbol) => (
-                                                            <Dropdown.Item key={symbol} onClick={() => { fetchTimeSeriesIntradayData({}) }}>{symbol}</Dropdown.Item>
-                                                        ))
-                                                    }
-                                                </DropdownButton>
-                                            </Nav.Item>
-                                            <Nav.Item style={{marginLeft: '10px'}}>
-                                                <DropdownButton id="dropdown-basic-button" title={tabularData["Interval"]}>
-                                                    {
-                                                        metaData["Interval"].map((inter) => (
-                                                            <Dropdown.Item
-                                                                key={inter}
-                                                                onClick={() => {
-                                                                    fetchTimeSeriesIntradayData({
-                                                                        ...tabularData,
-                                                                        "Interval": inter,
-                                                                        "Information": `Time Series (${inter.toLowerCase()})`,
-                                                                        "data": [],
-                                                                        "error": null,
-                                                                    })
-                                                                }}
-                                                            >{inter}</Dropdown.Item>
-                                                        ))
-                                                    }
-                                                </DropdownButton>
-                                            </Nav.Item>
-                                        </ButtonGroup>
-                                    </Nav>
-                                    {
-                                        intradayData.error ? (
-                                            <Card bg="danger" text='light' style={{width: '100%'}}
-                                                  className="mb-2">
-                                                <Card.Body>
-                                                    <Card.Title>Error</Card.Title>
-                                                    <Card.Text>{intradayData.error}</Card.Text>
-                                                </Card.Body>
-                                            </Card>
-                                        ) : (
-                                            <div style={{ marginTop: '10px', padding: '0px' }}>
-                                                <BootstrapTable
-                                                    {...props.baseProps}
-                                                    defaultSorted={[{ dataField: '0. timestamp', order: 'desc' }]}
-                                                    filter={filterFactory()}
-                                                    pagination={paginationFactory({sizePerPageRenderer})}
-                                                    noDataIndication={() => (
-                                                        <Spinner animation="border" role="status">
-                                                            <span className="visually-hidden">Loading...</span>
-                                                        </Spinner>
-                                                    )}
-                                                />
-                                            </div>
-                                    )
-                                }
-                                </Container>
-                            )
-                        }
+                        {props => (
+                            <Container>
+                                <Nav className="justify-content-end">
+                                    <ButtonGroup className="mb-2">
+                                        <Nav.Item>
+                                            <MyExportCSV {...props.csvProps} />
+                                        </Nav.Item>
+                                    </ButtonGroup>
+                                    <ButtonGroup className="mb-2">
+                                        <Nav.Item style={{marginLeft: '10px'}}>
+                                            <DropdownButton id="dropdown-basic-button" title={tabularData["SeriesType"]}>
+                                                {
+                                                    metaData["Series Type"].map((seriesType) => (
+                                                        <Dropdown.Item key={seriesType}>{seriesType}</Dropdown.Item>
+                                                    ))
+                                                }
+                                            </DropdownButton>
+                                        </Nav.Item>
+                                        <Nav.Item style={{marginLeft: '10px'}}>
+                                            <DropdownButton id="dropdown-basic-button" title={tabularData["Symbol"]}>
+                                                {
+                                                    metaData["Symbol"].map((symbol) => (
+                                                        <Dropdown.Item key={symbol}>{symbol}</Dropdown.Item>
+                                                    ))
+                                                }
+                                            </DropdownButton>
+                                        </Nav.Item>
+                                        <Nav.Item style={{marginLeft: '10px'}}>
+                                            <DropdownButton id="dropdown-basic-button" title={tabularData["Interval"]}>
+                                                {
+                                                    metaData["Interval"].map((inter) => (
+                                                        <Dropdown.Item
+                                                            key={inter}
+                                                            onClick={() => {
+                                                                fetchTimeSeriesIntradayData({
+                                                                    ...tabularData,
+                                                                    "Interval": inter,
+                                                                    "Information": `Time Series (${inter.toLowerCase()})`,
+                                                                    "data": [],
+                                                                    "error": null,
+                                                                })
+                                                            }}
+                                                        >{inter}</Dropdown.Item>
+                                                    ))
+                                                }
+                                            </DropdownButton>
+                                        </Nav.Item>
+                                    </ButtonGroup>
+                                </Nav>
+                                {loadContent(props)}
+                            </Container>
+                        )}
                     </ToolkitProvider>
                 </Card.Body>
             </Card>
