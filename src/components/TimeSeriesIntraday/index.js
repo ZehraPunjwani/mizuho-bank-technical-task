@@ -1,21 +1,17 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Container, Card, Button, Spinner, Nav, DropdownButton, Dropdown, ButtonGroup, Row, Col } from "react-bootstrap";
+import { Container, Card, Button, Spinner, DropdownButton, Dropdown, ButtonGroup, Row, Col } from "react-bootstrap";
 import BootstrapTable from 'react-bootstrap-table-next';
 import ToolkitProvider from 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit'
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import {setIntradayData, setIntradayError} from "../../redux/intradaySlice";
-
-import TIME_SERIES_INTRADAY_IBM_1MIN from '../../data/TIME_SERIES_INTRADAY_IBM_1MIN.json';
-import TIME_SERIES_INTRADAY_IBM_5MIN from '../../data/TIME_SERIES_INTRADAY_IBM_5MIN.json';
-import TIME_SERIES_INTRADAY_IBM_15MIN from '../../data/TIME_SERIES_INTRADAY_IBM_15MIN.json';
-import TIME_SERIES_INTRADAY_IBM_30MIN from '../../data/TIME_SERIES_INTRADAY_IBM_30MIN.json';
+import { setIntradayData, setIntradayError } from "../../redux/intradaySlice";
 
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import 'react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css';
 
 const TimeSeriesIntraday = () => {
+    const timeSeriesIntraDayData = useSelector((state) => state.intraday.timeSeriesIntraDayData);
     const intradayData = useSelector((state) => state.intraday.intradayData);
     const metaData = {
         "Series Type": ["TIME_SERIES_INTRADAY"],
@@ -25,7 +21,6 @@ const TimeSeriesIntraday = () => {
         "Output Size": "Full size",
         "Time Zone": "US/Eastern"
     };
-
     const [tabularData, setTabularData] = useState({
         SeriesType: metaData["Series Type"][0],
         Symbol: metaData["Symbol"][0],
@@ -37,7 +32,6 @@ const TimeSeriesIntraday = () => {
         data: [],
         error: null,
     });
-
     const [refresh, setRefresh] = useState(false);
 
     const dispatch = useDispatch();
@@ -102,19 +96,19 @@ const TimeSeriesIntraday = () => {
         let response;
         switch(props['Interval']) {
             case "1MIN":
-                response = TIME_SERIES_INTRADAY_IBM_1MIN;
+                response = timeSeriesIntraDayData.TIME_SERIES_INTRADAY_IBM_1MIN;
                 dispatch(setIntradayData({ response: response }));
                 break;
             case "5MIN":
-                response = TIME_SERIES_INTRADAY_IBM_5MIN;
+                response = timeSeriesIntraDayData.TIME_SERIES_INTRADAY_IBM_5MIN;
                 dispatch(setIntradayData({ response: response }));
                 break;
             case "15MIN":
-                response = TIME_SERIES_INTRADAY_IBM_15MIN;
+                response = timeSeriesIntraDayData.TIME_SERIES_INTRADAY_IBM_15MIN;
                 dispatch(setIntradayData({ response: response }));
                 break;
             case "30MIN":
-                response = TIME_SERIES_INTRADAY_IBM_30MIN;
+                response = timeSeriesIntraDayData.TIME_SERIES_INTRADAY_IBM_30MIN;
                 dispatch(setIntradayData({ response: response }));
                 break;
             default:
@@ -144,8 +138,6 @@ const TimeSeriesIntraday = () => {
                     "0. timestamp": intradayDataKeys[i]
                 }
             });
-
-            console.log(response);
 
             await setTabularData({
                 ...props,
