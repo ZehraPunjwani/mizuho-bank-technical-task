@@ -78,7 +78,13 @@ const TimeSeriesIntraday = () => {
         return data;
     }
 
-    const MyExportCSV = (props) => <Button className="btn btn-info" onClick={() => props.onExport()}>Export to CSV</Button>
+    const MyExportCSV = (props) => (
+        <Button
+            className={tabularData.data.length === 0 ? "btn btn-secondary" : "btn btn-info"}
+            onClick={() => props.onExport()}
+            disabled={tabularData.data.length === 0}
+        >Export to CSV</Button>
+    )
 
     const fetchTimeSeriesIntradayData = async (props) => {
         await setRefresh(true);
@@ -299,33 +305,29 @@ const TimeSeriesIntraday = () => {
                     <ToolkitProvider keyField='0. timestamp' data={tabularData.data} columns={columns} exportCSV={ { onlyExportFiltered: true, exportAll: false } }>
                         {props => (
                             <Container>
-                                <Nav className="justify-content-end">
-                                    <ButtonGroup className="mb-2">
-                                        <Nav.Item>
+                                <Row>
+                                    <Col>
+                                        <ButtonGroup className="mb-2">
                                             <MyExportCSV {...props.csvProps} />
-                                        </Nav.Item>
-                                    </ButtonGroup>
-                                    <ButtonGroup className="mb-2">
-                                        <Nav.Item style={{marginLeft: '10px'}}>
-                                            <DropdownButton id="dropdown-basic-button" title={tabularData["SeriesType"]}>
+                                        </ButtonGroup>
+                                    </Col>
+                                    <Col style={{ textAlign: 'right' }}>
+                                        <ButtonGroup className="mb-2">
+                                            <DropdownButton id="dropdown-basic-button" title={tabularData["SeriesType"]} style={{marginLeft: '10px'}}>
                                                 {
                                                     metaData["Series Type"].map((seriesType) => (
                                                         <Dropdown.Item key={seriesType}>{seriesType}</Dropdown.Item>
                                                     ))
                                                 }
                                             </DropdownButton>
-                                        </Nav.Item>
-                                        <Nav.Item style={{marginLeft: '10px'}}>
-                                            <DropdownButton id="dropdown-basic-button" title={tabularData["Symbol"]}>
+                                            <DropdownButton id="dropdown-basic-button" title={tabularData["Symbol"]} style={{marginLeft: '10px'}}>
                                                 {
                                                     metaData["Symbol"].map((symbol) => (
                                                         <Dropdown.Item key={symbol}>{symbol}</Dropdown.Item>
                                                     ))
                                                 }
                                             </DropdownButton>
-                                        </Nav.Item>
-                                        <Nav.Item style={{marginLeft: '10px'}}>
-                                            <DropdownButton id="dropdown-basic-button" title={tabularData["Interval"]}>
+                                            <DropdownButton id="dropdown-basic-button" title={tabularData["Interval"]} style={{marginLeft: '10px'}}>
                                                 {
                                                     metaData["Interval"].map((inter) => (
                                                         <Dropdown.Item
@@ -343,9 +345,9 @@ const TimeSeriesIntraday = () => {
                                                     ))
                                                 }
                                             </DropdownButton>
-                                        </Nav.Item>
-                                    </ButtonGroup>
-                                </Nav>
+                                        </ButtonGroup>
+                                    </Col>
+                                </Row>
                                 {loadContent(props)}
                             </Container>
                         )}
