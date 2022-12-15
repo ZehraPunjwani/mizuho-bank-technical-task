@@ -20,7 +20,7 @@ const TimeSeriesIntraday = () => {
     const metaData = {
         "Series Type": ["TIME_SERIES_INTRADAY"],
         "Symbol": ["IBM"],
-        "Last Refreshed": "2022-12-13 17:50:00",
+        "Last Refreshed": null,
         "Interval": ["1MIN", "5MIN", "15MIN", "30MIN"],
         "Output Size": "Full size",
         "Time Zone": "US/Eastern"
@@ -29,11 +29,11 @@ const TimeSeriesIntraday = () => {
     const [tabularData, setTabularData] = useState({
         SeriesType: metaData["Series Type"][0],
         Symbol: metaData["Symbol"][0],
-        LastRefreshed: "2022-12-13 17:50:00",
+        LastRefreshed: null,
         Interval: metaData["Interval"][0],
         Information: `Time Series (${metaData["Interval"][0].toLowerCase()})`,
-        OutputSize: "Full size",
-        TimeZone: "US/Eastern",
+        OutputSize: null,
+        TimeZone: null,
         data: [],
         error: null,
     });
@@ -54,6 +54,12 @@ const TimeSeriesIntraday = () => {
             </div>
         );
     }
+
+    const Formatter = (cell, row) => (
+        <span>
+            <strong>${cell}</strong>
+        </span>
+    )
 
     const sizePerPageRenderer = ({ options, currSizePerPage, onSizePerPageChange }) => (
         <div className="btn-group" role="group">
@@ -139,20 +145,43 @@ const TimeSeriesIntraday = () => {
                 }
             });
 
+            console.log(response);
+
             await setTabularData({
                 ...props,
+                LastRefreshed: response["Meta Data"]["3. Last Refreshed"],
+                OutputSize: response["Meta Data"]["5. Output Size"],
+                TimeZone: response["Meta Data"]["6. Time Zone"],
                 data: intradayDataValues,
             });
         } else {
             if(response.hasOwnProperty("Error Message")) {
                 dispatch(setIntradayError({ error: response["Error Message"] }))
-                setTabularData({ ...props, error: response["Error Message"] });
+                setTabularData({
+                    ...props,
+                    LastRefreshed: "N/A",
+                    OutputSize: "",
+                    TimeZone: "",
+                    error: response["Error Message"]
+                });
             } else if(response.hasOwnProperty("Note")) {
                 dispatch(setIntradayError({ error: response["Note"]}))
-                setTabularData({ ...props, error: response["Note"] });
+                setTabularData({
+                    ...props,
+                    LastRefreshed: "N/A",
+                    OutputSize: "",
+                    TimeZone: "",
+                    error: response["Note"]
+                });
             } else {
                 dispatch(setIntradayError({ error: response["Information"]}))
-                setTabularData({ ...props, error: response["Information"] });
+                setTabularData({
+                    ...props,
+                    LastRefreshed: "N/A",
+                    OutputSize: "",
+                    TimeZone: "",
+                    error: response["Information"]
+                });
             }
         }
 
@@ -172,10 +201,7 @@ const TimeSeriesIntraday = () => {
             filter: textFilter({ onFilter: customFilter }),
             headerFormatter: headerFormatter,
             style: (cell, row, rowIndex, colIndex) => {
-                return {
-                    color: 'black',
-                    fontSize: '14px',
-                };
+                return { color: 'black', fontSize: '14px' };
             }
 
         },
@@ -185,11 +211,9 @@ const TimeSeriesIntraday = () => {
             sort: true,
             filter: textFilter({ onFilter: customFilter }),
             headerFormatter: headerFormatter,
+            formatter: Formatter,
             style: (cell, row, rowIndex, colIndex) => {
-                return {
-                    color: 'black',
-                    fontSize: '14px',
-                };
+                return { color: 'black', fontSize: '14px' };
             }
         },
         {
@@ -198,11 +222,9 @@ const TimeSeriesIntraday = () => {
             sort: true,
             filter: textFilter({ onFilter: customFilter }),
             headerFormatter: headerFormatter,
+            formatter: Formatter,
             style: (cell, row, rowIndex, colIndex) => {
-                return {
-                    color: 'black',
-                    fontSize: '14px',
-                };
+                return { color: 'black', fontSize: '14px' };
             }
         },
         {
@@ -211,11 +233,9 @@ const TimeSeriesIntraday = () => {
             sort: true,
             filter: textFilter({ onFilter: customFilter }),
             headerFormatter: headerFormatter,
+            formatter: Formatter,
             style: (cell, row, rowIndex, colIndex) => {
-                return {
-                    color: 'black',
-                    fontSize: '14px',
-                };
+                return { color: 'black', fontSize: '14px' };
             }
         },
         {
@@ -224,11 +244,9 @@ const TimeSeriesIntraday = () => {
             sort: true,
             filter: textFilter({ onFilter: customFilter }),
             headerFormatter: headerFormatter,
+            formatter: Formatter,
             style: (cell, row, rowIndex, colIndex) => {
-                return {
-                    color: 'black',
-                    fontSize: '14px',
-                };
+                return { color: 'black', fontSize: '14px' };
             }
         },
         {
@@ -238,10 +256,7 @@ const TimeSeriesIntraday = () => {
             filter: textFilter({ onFilter: customFilter }),
             headerFormatter: headerFormatter,
             style: (cell, row, rowIndex, colIndex) => {
-                return {
-                    color: 'black',
-                    fontSize: '14px',
-                };
+                return { color: 'black', fontSize: '14px' };
             }
         }
     ];
