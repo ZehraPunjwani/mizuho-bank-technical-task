@@ -43,17 +43,17 @@ The UI application will run on:
 [http://localhost:3000/](http://localhost:3000/)
 
 ## Screenshots
-![](./src/data/Screenshot 2022-12-16 at 16.25.42.png)
-![](./src/data/Screenshot 2022-12-16 at 12.55.23.png)
-![](./src/data/Screenshot 2022-12-16 at 16.27.56.png)
-![](./src/data/Screenshot 2022-12-16 at 16.28.07.png)
-![](./src/data/Screenshot 2022-12-16 at 16.27.49.png)
-![](./src/data/Screenshot 2022-12-16 at 16.26.50.png)
-![](./src/data/Screenshot 2022-12-16 at 16.26.42.png)
-![](./src/data/Screenshot 2022-12-16 at 16.26.32.png)
-![](./src/data/Screenshot 2022-12-16 at 16.26.21.png)
-![](./src/data/Screenshot 2022-12-16 at 16.26.09.png)
-![](./src/data/Screenshot 2022-12-16 at 16.25.53.png)
+![](./src/data/Screenshot1.png)
+![](./src/data/Screenshot2.png)
+![](./src/data/Screenshot11.png)
+![](./src/data/Screenshot10.png)
+![](./src/data/Screenshot9.png)
+![](./src/data/Screenshot8.png)
+![](./src/data/Screenshot7.png)
+![](./src/data/Screenshot6.png)
+![](./src/data/Screenshot5.png)
+![](./src/data/Screenshot4.png)
+![](./src/data/Screenshot3.png)
 
 ## Unexplored
 - Testing - Jest
