@@ -42,39 +42,29 @@ To run the application, run the following command:
 The UI application will run on:
 [http://localhost:3000/](http://localhost:3000/)
 
-## Directory Structure
-    File Structure:
-        - project_dir/
-            - docker-compose.yml (entry point to run the application end-to-end with one command)
-            - /node_backend ( NODE BACK END ) - PORT - 3001
-                - node_modules
-                - utils/
-                    - genes.sql (sql statements to set up the USER, DATABASE and TABLE)
-                    - routes.js (contains all endpoints)
-                - Dockerfile
-                - index.js
-                
-            - postgres ( DATABASE ) - PORT 5432
-                - /db_data (tables, configurations and schema files)
-                
-            - /react_frontend (REACT FRONT END) - PORT 3000
-                - Dockerfile
-                - public
-                    - index.html
-                    - manifest.json
-                    - Institute_of_Cancer_Research.png
-                - src
-                    - components
-                        - Gene (index.js and styles.css)
-                        - Header (index.js and styles.css)
-                        - Error (index.js)
-                    - page
-                        - Genes (index.js and styles.css)
-                        - App.js
-                        - App.test.js
-                    - utils
-                        - routes.js
-                        - genes.json
+## Screenshots
+![](../../../Users/zehrapunjwani/Desktop/Screenshot 2022-12-16 at 16.25.42.png)
+![](../../../Users/zehrapunjwani/Desktop/Screenshot 2022-12-16 at 12.55.23.png)
+![](../../../Users/zehrapunjwani/Desktop/Screenshot 2022-12-16 at 16.27.56.png)
+![](../../../Users/zehrapunjwani/Desktop/Screenshot 2022-12-16 at 16.28.07.png)
+![](../../../Users/zehrapunjwani/Desktop/Screenshot 2022-12-16 at 16.27.49.png)
+![](../../../Users/zehrapunjwani/Desktop/Screenshot 2022-12-16 at 16.26.50.png)
+![](../../../Users/zehrapunjwani/Desktop/Screenshot 2022-12-16 at 16.26.42.png)
+![](../../../Users/zehrapunjwani/Desktop/Screenshot 2022-12-16 at 16.26.32.png)
+![](../../../Users/zehrapunjwani/Desktop/Screenshot 2022-12-16 at 16.26.21.png)
+![](../../../Users/zehrapunjwani/Desktop/Screenshot 2022-12-16 at 16.26.09.png)
+![](../../../Users/zehrapunjwani/Desktop/Screenshot 2022-12-16 at 16.25.53.png)
 
 ## Unexplored
 - Testing - Jest
+
+## Short Falls / Blockers
+- Free API 
+  - Number of API hits allowed in a minute / day on the free version prevented End-to-End development and testing
+    - Temporary Solution - Mock API response files
+  - Multiple stock symbols - Free version of API only has "IBM" using the above API 
+- Given more time, the key focus for the future would be:
+  - Full Software Development Life Cycle best practices
+  - UI Design creation before implementation
+  - Development and Testing Strategy
+  - Agile / Scrum Practice - Creation of Jira with broken down epics, features and user stories

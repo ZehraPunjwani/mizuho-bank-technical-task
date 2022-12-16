@@ -202,6 +202,7 @@ const Home = () => {
                                     <Dropdown.Item
                                         key={inter}
                                         onClick={() => {
+                                            setDate("");
                                             fetchTimeSeriesIntradayData({
                                                 ...tabularData,
                                                 "Interval": inter,
