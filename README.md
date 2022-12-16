@@ -43,8 +43,8 @@ The UI application will run on:
 [http://localhost:3000/](http://localhost:3000/)
 
 ## Screenshots
-![](./src/data/Screenshot1.png)
 ![](./src/data/Screenshot2.png)
+![](./src/data/Screenshot1.png)
 ![](./src/data/Screenshot11.png)
 ![](./src/data/Screenshot10.png)
 ![](./src/data/Screenshot9.png)
