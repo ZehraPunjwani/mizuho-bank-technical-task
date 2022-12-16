@@ -43,17 +43,17 @@ The UI application will run on:
 [http://localhost:3000/](http://localhost:3000/)
 
 ## Screenshots
-![](../../../Users/zehrapunjwani/Desktop/Screenshot 2022-12-16 at 16.25.42.png)
-![](../../../Users/zehrapunjwani/Desktop/Screenshot 2022-12-16 at 12.55.23.png)
-![](../../../Users/zehrapunjwani/Desktop/Screenshot 2022-12-16 at 16.27.56.png)
-![](../../../Users/zehrapunjwani/Desktop/Screenshot 2022-12-16 at 16.28.07.png)
-![](../../../Users/zehrapunjwani/Desktop/Screenshot 2022-12-16 at 16.27.49.png)
-![](../../../Users/zehrapunjwani/Desktop/Screenshot 2022-12-16 at 16.26.50.png)
-![](../../../Users/zehrapunjwani/Desktop/Screenshot 2022-12-16 at 16.26.42.png)
-![](../../../Users/zehrapunjwani/Desktop/Screenshot 2022-12-16 at 16.26.32.png)
-![](../../../Users/zehrapunjwani/Desktop/Screenshot 2022-12-16 at 16.26.21.png)
-![](../../../Users/zehrapunjwani/Desktop/Screenshot 2022-12-16 at 16.26.09.png)
-![](../../../Users/zehrapunjwani/Desktop/Screenshot 2022-12-16 at 16.25.53.png)
+![](./src/data/Screenshot 2022-12-16 at 16.25.42.png)
+![](./src/data/Screenshot 2022-12-16 at 12.55.23.png)
+![](./src/data/Screenshot 2022-12-16 at 16.27.56.png)
+![](./src/data/Screenshot 2022-12-16 at 16.28.07.png)
+![](./src/data/Screenshot 2022-12-16 at 16.27.49.png)
+![](./src/data/Screenshot 2022-12-16 at 16.26.50.png)
+![](./src/data/Screenshot 2022-12-16 at 16.26.42.png)
+![](./src/data/Screenshot 2022-12-16 at 16.26.32.png)
+![](./src/data/Screenshot 2022-12-16 at 16.26.21.png)
+![](./src/data/Screenshot 2022-12-16 at 16.26.09.png)
+![](./src/data/Screenshot 2022-12-16 at 16.25.53.png)
 
 ## Unexplored
 - Testing - Jest
