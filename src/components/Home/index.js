@@ -35,7 +35,7 @@ const Home = () => {
     });
     const [refresh, setRefresh] = useState(false);
 
-    const [date, setDate] = useState("2022-11-15");
+    const [date, setDate] = useState("");
 
     const dispatch = useDispatch();
 
@@ -214,7 +214,8 @@ const Home = () => {
                                 ))
                             }
                         </DropdownButton>
-                        <DropdownButton id="dropdown-basic-button" title={date} style={{ marginLeft: '10px', textAlign: 'right' }}>
+                        <DropdownButton id="dropdown-basic-button" title={date.length > 0 ? date : "All"} style={{ marginLeft: '10px', textAlign: 'right' }}>
+                            <Dropdown.Item key="All" onClick={() => setDate("")}>All</Dropdown.Item>
                             {
                                 Object.keys(groupData(tabularData.data)).map((entry) => (
                                     <Dropdown.Item key={entry}
@@ -235,7 +236,7 @@ const Home = () => {
             </div>
 
             <div style={{ marginTop: "20px"}}>
-                <AreaResponsiveContainer groupData={groupData(tabularData.data)[date]} refresh={refresh} intradayData={intradayData} />
+                <AreaResponsiveContainer groupData={date.length > 0 ? groupData(tabularData.data)[date]: tabularData.data} refresh={refresh} intradayData={intradayData} />
             </div>
         </div>
     )

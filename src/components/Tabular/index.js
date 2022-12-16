@@ -17,7 +17,7 @@ const Tabular = ({ tabularData, date, refresh, intradayData }) => {
         );
     }
 
-    const Formatter = (cell, row) => (
+    const cellFormatter = (cell, row) => (
         <span>
             <strong>${cell}</strong>
         </span>
@@ -73,7 +73,7 @@ const Tabular = ({ tabularData, date, refresh, intradayData }) => {
             sort: true,
             filter: textFilter({ onFilter: customFilter }),
             headerFormatter: headerFormatter,
-            formatter: Formatter,
+            formatter: cellFormatter,
             style: (cell, row, rowIndex, colIndex) => {
                 return { color: 'black', fontSize: '14px' };
             }
@@ -84,7 +84,7 @@ const Tabular = ({ tabularData, date, refresh, intradayData }) => {
             sort: true,
             filter: textFilter({ onFilter: customFilter }),
             headerFormatter: headerFormatter,
-            formatter: Formatter,
+            formatter: cellFormatter,
             style: (cell, row, rowIndex, colIndex) => {
                 return { color: 'black', fontSize: '14px' };
             }
@@ -95,7 +95,7 @@ const Tabular = ({ tabularData, date, refresh, intradayData }) => {
             sort: true,
             filter: textFilter({ onFilter: customFilter }),
             headerFormatter: headerFormatter,
-            formatter: Formatter,
+            formatter: cellFormatter,
             style: (cell, row, rowIndex, colIndex) => {
                 return { color: 'black', fontSize: '14px' };
             }
@@ -106,7 +106,7 @@ const Tabular = ({ tabularData, date, refresh, intradayData }) => {
             sort: true,
             filter: textFilter({ onFilter: customFilter }),
             headerFormatter: headerFormatter,
-            formatter: Formatter,
+            formatter: cellFormatter,
             style: (cell, row, rowIndex, colIndex) => {
                 return { color: 'black', fontSize: '14px' };
             }
