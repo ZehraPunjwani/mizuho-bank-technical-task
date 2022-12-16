@@ -10,16 +10,19 @@ import { setIntradayData, setIntradayError } from "../../redux/intradaySlice";
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 import 'react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css';
 
+// const API_KEY = "GEIXYV4P44EIMBG6";
+// const GET_API = `https://www.alphavantage.co/query`;
 const TimeSeriesIntraday = () => {
     const timeSeriesIntraDayData = useSelector((state) => state.intraday.timeSeriesIntraDayData);
     const intradayData = useSelector((state) => state.intraday.intradayData);
+
     const metaData = {
         "Series Type": ["TIME_SERIES_INTRADAY"],
         "Symbol": ["IBM"],
         "Last Refreshed": null,
         "Interval": ["1MIN", "5MIN", "15MIN", "30MIN"],
-        "Output Size": "Full size",
-        "Time Zone": "US/Eastern"
+        "Output Size": null,
+        "Time Zone": null
     };
     const [tabularData, setTabularData] = useState({
         SeriesType: metaData["Series Type"][0],
@@ -35,9 +38,6 @@ const TimeSeriesIntraday = () => {
     const [refresh, setRefresh] = useState(false);
 
     const dispatch = useDispatch();
-
-    // const API_KEY = "GEIXYV4P44EIMBG6";
-    // const GET_API = `https://www.alphavantage.co/query`;
 
     const headerFormatter = (column, colIndex, { sortElement, filterElement }) => {
         return (
@@ -118,7 +118,6 @@ const TimeSeriesIntraday = () => {
         if(response.hasOwnProperty("Meta Data")) {
             let intradayDataKeys;
             let intradayDataValues
-            let filteredOptions;
 
             if (refresh || Object.keys(response).length === 0) {
                 intradayDataKeys = Object.keys(Object.values(response)[1]);
@@ -129,11 +128,7 @@ const TimeSeriesIntraday = () => {
             }
 
             intradayDataValues.map((value, i) => {
-                filteredOptions = intradayDataKeys
-                    .map(dateTime => dateTime.split(' ')[0])
-                    .filter((value, index, a) => a.indexOf(value) === index);
-
-                intradayDataValues[i] = {
+                return intradayDataValues[i] = {
                     ...intradayDataValues[i],
                     "0. timestamp": intradayDataKeys[i]
                 }
@@ -256,19 +251,23 @@ const TimeSeriesIntraday = () => {
     const loadContent = (props) => {
         if(refresh) {
             return (
-                <Spinner animation="border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </Spinner>
+                <Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '25vh' }}>
+                    <Spinner animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                </Container>
             )
         } else {
             if (intradayData.error) {
                 return (
-                    <Card bg="danger" text='light' style={{width: '100%'}} className="mb-2">
-                        <Card.Body>
-                            <Card.Title>Error</Card.Title>
-                            <Card.Text>{intradayData.error}</Card.Text>
-                        </Card.Body>
-                    </Card>
+                    <Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '25vh' }}>
+                        <Card bg="danger" text='light' style={{width: '100%'}} className="mb-2">
+                            <Card.Body>
+                                <Card.Title>Error</Card.Title>
+                                <Card.Text>{intradayData.error}</Card.Text>
+                            </Card.Body>
+                        </Card>
+                    </Container>
                 )
             } else {
                 return (
@@ -287,81 +286,70 @@ const TimeSeriesIntraday = () => {
     }
 
     return (
-        <div style={{ textAlign: 'left' }}>
-            <div>Requirements</div>
-            <ul>
-                <li>Fetch time series data using the above api</li>
-                <li>Display tabular data</li>
-                <li>Visualise the data Nice to have</li>
-                <li>Ability to filter data and chart based on date/time range</li>
-                <li>Ability to switch stock symbol</li>
-            </ul>
-
-            <Card>
-                <Card.Header>
-                    <Row>
-                        <Col>
-                            TIME_SERIES_INTRADAY
-                        </Col>
-                        <Col style={{ textAlign: 'right' }}>
-                            Last Refreshed: {tabularData.LastRefreshed} {tabularData.TimeZone}
-                        </Col>
-                    </Row>
-                </Card.Header>
-                <Card.Body>
-                    <ToolkitProvider keyField='0. timestamp' data={tabularData.data} columns={columns} exportCSV={ { onlyExportFiltered: true, exportAll: false } }>
-                        {props => (
-                            <Container>
-                                <Row>
-                                    <Col>
-                                        <ButtonGroup className="mb-2">
-                                            <MyExportCSV {...props.csvProps} />
-                                        </ButtonGroup>
-                                    </Col>
-                                    <Col style={{ textAlign: 'right' }}>
-                                        <ButtonGroup className="mb-2">
-                                            <DropdownButton id="dropdown-basic-button" title={tabularData["SeriesType"]} style={{marginLeft: '10px'}}>
-                                                {
-                                                    metaData["Series Type"].map((seriesType) => (
-                                                        <Dropdown.Item key={seriesType}>{seriesType}</Dropdown.Item>
-                                                    ))
-                                                }
-                                            </DropdownButton>
-                                            <DropdownButton id="dropdown-basic-button" title={tabularData["Symbol"]} style={{marginLeft: '10px'}}>
-                                                {
-                                                    metaData["Symbol"].map((symbol) => (
-                                                        <Dropdown.Item key={symbol}>{symbol}</Dropdown.Item>
-                                                    ))
-                                                }
-                                            </DropdownButton>
-                                            <DropdownButton id="dropdown-basic-button" title={tabularData["Interval"]} style={{marginLeft: '10px'}}>
-                                                {
-                                                    metaData["Interval"].map((inter) => (
-                                                        <Dropdown.Item
-                                                            key={inter}
-                                                            onClick={() => {
-                                                                fetchTimeSeriesIntradayData({
-                                                                    ...tabularData,
-                                                                    "Interval": inter,
-                                                                    "Information": `Time Series (${inter.toLowerCase()})`,
-                                                                    "data": [],
-                                                                    "error": null,
-                                                                })
-                                                            }}
-                                                        >{inter}</Dropdown.Item>
-                                                    ))
-                                                }
-                                            </DropdownButton>
-                                        </ButtonGroup>
-                                    </Col>
-                                </Row>
-                                {loadContent(props)}
-                            </Container>
-                        )}
-                    </ToolkitProvider>
-                </Card.Body>
-            </Card>
-        </div>
+        <Card>
+            <Card.Header>
+                <Row>
+                    <Col>
+                        TIME_SERIES_INTRADAY Tabular
+                    </Col>
+                    <Col style={{ textAlign: 'right' }}>
+                        Last Refreshed: {tabularData.LastRefreshed} {tabularData.TimeZone}
+                    </Col>
+                </Row>
+            </Card.Header>
+            <Card.Body>
+                <ToolkitProvider keyField='0. timestamp' data={tabularData.data} columns={columns} exportCSV={ { onlyExportFiltered: true, exportAll: false } }>
+                    {props => (
+                        <div>
+                            <Row>
+                                <Col>
+                                    <ButtonGroup className="mb-2">
+                                        <MyExportCSV {...props.csvProps} />
+                                    </ButtonGroup>
+                                </Col>
+                                <Col style={{ textAlign: 'right' }}>
+                                    <ButtonGroup className="mb-2">
+                                        <DropdownButton id="dropdown-basic-button" title={tabularData["SeriesType"]} style={{marginLeft: '10px'}}>
+                                            {
+                                                metaData["Series Type"].map((seriesType) => (
+                                                    <Dropdown.Item key={seriesType}>{seriesType}</Dropdown.Item>
+                                                ))
+                                            }
+                                        </DropdownButton>
+                                        <DropdownButton id="dropdown-basic-button" title={tabularData["Symbol"]} style={{marginLeft: '10px'}}>
+                                            {
+                                                metaData["Symbol"].map((symbol) => (
+                                                    <Dropdown.Item key={symbol}>{symbol}</Dropdown.Item>
+                                                ))
+                                            }
+                                        </DropdownButton>
+                                        <DropdownButton id="dropdown-basic-button" title={tabularData["Interval"]} style={{marginLeft: '10px'}}>
+                                            {
+                                                metaData["Interval"].map((inter) => (
+                                                    <Dropdown.Item
+                                                        key={inter}
+                                                        onClick={() => {
+                                                            fetchTimeSeriesIntradayData({
+                                                                ...tabularData,
+                                                                "Interval": inter,
+                                                                "Information": `Time Series (${inter.toLowerCase()})`,
+                                                                "data": [],
+                                                                "error": null,
+                                                            })
+                                                        }}
+                                                    >{inter}</Dropdown.Item>
+                                                ))
+                                            }
+                                        </DropdownButton>
+                                    </ButtonGroup>
+                                </Col>
+                            </Row>
+                            {loadContent(props)}
+                        </div>
+                    )}
+                </ToolkitProvider>
+            </Card.Body>
+        </Card>
     )
 }
 

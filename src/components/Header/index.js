@@ -1,6 +1,5 @@
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import img from '../../assets/mizuho-bank-logo.png';
-import { Link } from "react-router-dom";
 
 const Header = () => {
     return (
