@@ -1,7 +1,7 @@
 import { ComposedChart, Line, Legend, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Card, Row, Col, Container, Spinner } from 'react-bootstrap';
 
-const AreaResponsiveContainer = ({ data, refresh, intradayData }) => {
+const AreaResponsiveContainer = ({ groupData, refresh, intradayData }) => {
     const loadContent = () => {
         if(refresh) {
             return (
@@ -27,7 +27,7 @@ const AreaResponsiveContainer = ({ data, refresh, intradayData }) => {
                 return (
                     <div style={{width: '100%', height: 800}}>
                         <ResponsiveContainer>
-                            <ComposedChart width={500} height={400} data={data} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+                            <ComposedChart width={500} height={400} data={groupData} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
                                 <CartesianGrid stroke="#f5f5f5" />
                                 <XAxis dataKey="Timestamp" />
                                 <YAxis domain={['dataMin', 'dataMax']} />

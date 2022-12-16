@@ -4,7 +4,7 @@ import ToolkitProvider from 'react-bootstrap-table2-toolkit/dist/react-bootstrap
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 
-const Tabular = ({ tabularData, groupData, refresh, intradayData }) => {
+const Tabular = ({ tabularData, date, refresh, intradayData }) => {
 
     const headerFormatter = (column, colIndex, { sortElement, filterElement }) => {
 
@@ -49,9 +49,9 @@ const Tabular = ({ tabularData, groupData, refresh, intradayData }) => {
 
     const MyExportCSV = (props) => (
         <Button
-            className={groupData.length === 0 ? "btn btn-secondary" : "btn btn-info"}
+            className={tabularData.data.length === 0 ? "btn btn-secondary" : "btn btn-info"}
             onClick={() => props.onExport()}
-            disabled={groupData.length === 0}
+            disabled={tabularData.data.length === 0}
         >Export to CSV</Button>
     )
 
@@ -173,7 +173,7 @@ const Tabular = ({ tabularData, groupData, refresh, intradayData }) => {
                 </Row>
             </Card.Header>
             <Card.Body>
-                <ToolkitProvider keyField='Timestamp' data={groupData} columns={columns} exportCSV={ { onlyExportFiltered: true, exportAll: false } }>
+                <ToolkitProvider keyField='Timestamp' data={tabularData.data.filter((entry) => entry["Timestamp"].includes(date))} columns={columns} exportCSV={ { onlyExportFiltered: true, exportAll: false } }>
                     {props => (
                         <Row>
                             <Col style={{ textAlign: 'left' }}>

@@ -24,7 +24,7 @@ const Home = () => {
     };
     const [tabularData, setTabularData] = useState({
         SeriesType: metaData["Series Type"][0],
-        Symbol: metaData["Symbol"][2],
+        Symbol: metaData["Symbol"][0],
         LastRefreshed: null,
         Interval: metaData["Interval"][2],
         Information: `Time Series (${metaData["Interval"][2].toLowerCase()})`,
@@ -44,7 +44,6 @@ const Home = () => {
     }
 
     const sort = (data) => {
-        console.log(data);
         data.map((entry) => {
             Object.keys(entry).map((key) => {
                 if (key !== capitalizeFirstLetter(key.split(' ')[0])) {
@@ -68,13 +67,8 @@ const Home = () => {
             return entry;
         }, Object.create(null));
 
-        // console.log("groupedData", groupedData)
-        // console.log("groupedData", groupedData[date])
-
         return groupedData;
     }
-
-    // console.log("groupedData test", Object.values(groupData(tabularData.data)))
 
     const fetchTimeSeriesIntradayData = async (props) => {
         await setRefresh(true);
@@ -124,8 +118,6 @@ const Home = () => {
                 }
             });
 
-            console.log("intradayDataValues", intradayDataValues);
-
             // this gives an object with dates as keys
             const groups = sort(intradayDataValues).reduce((groups, entry) => {
                 const date = entry["Timestamp"].split(' ')[0];
@@ -138,9 +130,6 @@ const Home = () => {
 
                 return groups;
             }, {});
-
-            console.log("groups", groups);
-            console.log("groups values", Object.values(groups).flat());
 
             await setTabularData({
                 ...props,
@@ -231,7 +220,6 @@ const Home = () => {
                                     <Dropdown.Item key={entry}
                                         onClick={async () => {
                                             await setDate(entry)
-                                            console.log(entry)
                                         }}>
                                         {entry}
                                     </Dropdown.Item>
@@ -243,11 +231,11 @@ const Home = () => {
             </Row>
 
             <div>
-                <Tabular tabularData={tabularData} groupData={groupData(tabularData.data)[date]} refresh={refresh} intradayData={intradayData} />
+                <Tabular tabularData={tabularData} date={date} refresh={refresh} intradayData={intradayData} />
             </div>
 
             <div style={{ marginTop: "20px"}}>
-                <AreaResponsiveContainer data={groupData(tabularData.data)[date]} refresh={refresh} intradayData={intradayData} />
+                <AreaResponsiveContainer groupData={groupData(tabularData.data)[date]} refresh={refresh} intradayData={intradayData} />
             </div>
         </div>
     )
