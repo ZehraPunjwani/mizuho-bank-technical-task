@@ -68,3 +68,4 @@ The UI application will run on:
   - UI Design creation before implementation
   - Development and Testing Strategy
   - Agile / Scrum Practice - Creation of Jira with broken down epics, features and user stories
+  - Further Data end-points and Analytics, different chart types
